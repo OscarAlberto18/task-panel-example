@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Caso Ferretería — Análisis de Datos</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap');
+:root{--bg:#EEF0F1;--surface:#FFFFFF;--ink:#1A1D1F;--muted:#5C6570;--accent:#D9631E;--accent-deep:#A84413;--line:#D3D7DA;--good-bg:#E7F3E9;--good-ink:#1E6B34;}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',system-ui,sans-serif;margin:0;padding:32px 16px;}
+.wrap{max-width:760px;margin:0 auto;}
+.ticket-head{background:var(--surface);border:1px solid var(--line);border-top:6px solid var(--accent);border-radius:10px;padding:28px;margin-bottom:28px;}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;color:var(--accent-deep);text-transform:uppercase;margin:0 0 10px;}
+h1{font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(28px,5vw,38px);line-height:1.08;margin:0 0 10px;}
+.subtitle{color:var(--muted);font-size:15.5px;line-height:1.5;margin:0 0 20px;max-width:60ch;}
+.specs{display:flex;flex-wrap:wrap;gap:10px 22px;padding-top:16px;border-top:1px solid var(--line);font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--muted);}
+.specs b{color:var(--ink);font-weight:600;}
+.note{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;padding:14px 18px;font-size:14px;color:var(--muted);margin-bottom:32px;line-height:1.55;}
+.order{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:24px 26px;margin-bottom:22px;}
+.order-num{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.06em;color:var(--accent-deep);text-transform:uppercase;margin:0 0 8px;}
+.order h2{font-family:'Archivo',sans-serif;font-weight:700;font-size:21px;margin:0 0 16px;}
+.row{display:grid;grid-template-columns:88px 1fr;gap:4px 16px;margin-bottom:10px;font-size:14.5px;line-height:1.55;}
+.row .tag{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--muted);text-transform:uppercase;}
+.row.result .tag{color:var(--good-ink);}
+@media(max-width:480px){.row{grid-template-columns:1fr;}}
+.order figure{margin:16px 0 4px;}
+.order img{width:100%;height:auto;border-radius:6px;border:1px solid var(--line);display:block;}
+.order figcaption{font-size:12px;color:var(--muted);margin-top:6px;font-family:'IBM Plex Mono',monospace;}
+.closing{background:var(--good-bg);border:1px solid var(--line);border-radius:10px;padding:20px 24px;font-size:15px;line-height:1.55;margin:28px 0;}
+footer{text-align:center;color:var(--muted);font-size:12.5px;font-family:'IBM Plex Mono',monospace;margin-top:36px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="ticket-head">
+<p class="eyebrow">Caso de práctica · Análisis de datos</p>
+<h1>Limpieza y análisis de ventas de una ferretería</h1>
+<p class="subtitle">Cuatro problemas reales de datos — duplicados, falta de visibilidad por sucursal, una caída de ventas sin explicar, e información dispersa — y cómo quedaron resueltos.</p>
+<div class="specs"><span>Período: <b>sep-2024 a sep-2025</b></span><span>Transacciones: <b>2.999</b></span><span>Modelo: <b>3FN, 5 catálogos</b></span><span>Herramienta: <b>Excel</b></span></div>
+</div>
+<div class="note"><b>Nota:</b> proyecto propio de práctica aplicado a un dataset de ventas — se documenta como evidencia de cómo detecto un problema en los datos y lo resuelvo hasta convertirlo en un resultado accionable.</div>
+<div class="order">
+<p class="order-num">Orden Nº 01</p>
+<h2>Datos de clientes duplicados y sin estandarizar</h2>
+<div class="row"><span class="tag">Antes</span><span>Los nombres de clientes se repetían en cientos de filas, con prefijos inconsistentes (Dr., Sra., Ing.) mezclados en el texto.</span></div>
+<div class="row"><span class="tag">Solución</span><span>Armé un catálogo único de clientes con ID exclusivo y nombre limpio, referenciado desde toda la base de ventas.</span></div>
+<div class="row result"><span class="tag">Resultado</span><span>Más de 3.100 clientes únicos, identificables y trazables a todas sus compras.</span></div>
+</div>
+<div class="order">
+<p class="order-num">Orden Nº 02</p>
+<h2>Sin forma de comparar el desempeño por sucursal</h2>
+<div class="row"><span class="tag">Antes</span><span>Las ventas estaban mezcladas en una sola tabla larga, sin vista para comparar sucursales.</span></div>
+<div class="row"><span class="tag">Solución</span><span>Construí una tabla cruzando sucursal y tipo de venta, con cantidad, monto y ticket promedio.</span></div>
+<div class="row result"><span class="tag">Resultado</span><span>Se ve de un vistazo qué sucursal concentra más ventas de alto valor.</span></div>
+</div>
+<div class="order">
+<p class="order-num">Orden Nº 03</p>
+<h2>Nadie sabía por qué caían las ventas en septiembre</h2>
+<div class="row"><span class="tag">Antes</span><span>Se sospechaba que septiembre venía flojo, sin forma de confirmarlo ni de saber qué hacer.</span></div>
+<div class="row"><span class="tag">Solución</span><span>Analicé dos años de historial y descompuse la caída en sus causas reales.</span></div>
+<div class="row result"><span class="tag">Resultado</span><span>La caída se repite todos los años, representa ≈$5.000.000, y quedó una acción concreta propuesta.</span></div>
+</div>
+<div class="order">
+<p class="order-num">Orden Nº 04</p>
+<h2>Información dispersa, sin resumen ejecutivo</h2>
+<div class="row"><span class="tag">Antes</span><span>Había que revisar manualmente miles de filas sueltas para saber cualquier indicador.</span></div>
+<div class="row"><span class="tag">Solución</span><span>Armé un panel único con KPIs y filtros por categoría, sucursal, mes o provincia.</span></div>
+<div class="row result"><span class="tag">Resultado</span><span>Cualquier persona consulta el estado de las ventas en segundos.</span></div>
+</div>
+<div class="closing">Este tipo de trabajo — detectar un problema real en los datos, entender su causa, y convertirlo en un resultado claro y accionable — es lo que aplico en cualquier proyecto de datos.</div>
+<footer>OSCAR IBAÑEZ · ANÁLISIS DE DATOS</footer>
+</div>
+</body>
+</html>
